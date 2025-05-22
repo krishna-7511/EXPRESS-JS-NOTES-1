@@ -32,9 +32,16 @@ app.get("/orange", (req, res) => {
     res.send("you contected orange path");
 });
 
-app.get("*", (req, res) => {
-    res.send("this path does not exist");
+// Catch-all route (should be last)  use one this is tested and worked for all
+app.use(/.*/, (req, res) => {
+    res.status(404).send("There is no path matched.");
 });
+
+(or)
+app.use((req, res) => {
+    res.status(404).send("There is no path matched.");
+});
+
 
 app.post("/", (req, res) => {
     res.send("you send a post request to root");
@@ -58,10 +65,78 @@ app.get("/:username/:id", (req, res) => {
  
 
 // Query Selector  like google search
-aapp.get('/search', (req, res) => {
+app.get('/search', (req, res) => {
     let { q } = req.query;
     if(!q) {
         res.send("<h1>Nothing Searched</h1>");
     }
     res.send(`<h1>search results for query: ${q}</h1>`);
 });
+
+
+/*    order wise searched for chatgpt
+
+  const express = require("express");
+const app = express();
+
+let port = 3000;
+
+app.listen(port, () => {
+    console.log(`App listening at port ${port}`);
+});
+
+// GET Root
+app.get("/", (req, res) => {
+    res.send("You are on the root path");
+});
+
+// GET /apple
+app.get("/apple", (req, res) => {
+    res.send("You contacted the apple path");
+});
+
+// GET /orange
+app.get("/orange", (req, res) => {
+    res.send("You contacted the orange path");
+});
+
+// GET with path parameters
+app.get("/:username/:id", (req, res) => {
+    let { username, id } = req.params;
+    let htmlStr = `<h1>Welcome to the page of @${username}!</h1>`;
+    res.send(htmlStr);
+});
+
+// GET with query string
+app.get("/search", (req, res) => {
+    let { q } = req.query;
+    if (!q) {
+        return res.send("<h1>Nothing Searched</h1>");
+    }
+    res.send(`<h1>Search results for query: ${q}</h1>`);
+});
+
+// POST root
+app.post("/", (req, res) => {
+    res.send("You sent a POST request to root");
+});
+
+// Catch-all route (should be last)  use one thios is tested and worked for all
+app.use(/.*/, (req, res) => {
+    res.status(404).send("There is no path matched.");
+});
+
+app.use((req, res) => {
+    res.status(404).send("There is no path matched.");
+});
+
+// Middleware after routing
+app.use((req, res) => {
+    console.log("Request accepted!");
+    res.send({
+        name: "apple",
+        color: "red"
+    });
+});
+
+*/
